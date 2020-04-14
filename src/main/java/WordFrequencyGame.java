@@ -11,42 +11,55 @@ public class WordFrequencyGame {
 
     public String getResult(String sentence) {
 
-
         if (sentence.split(SPACE_PATTERN).length == 1) {
             return sentence + " 1";
         } else {
             try {
-                //split the input string with 1 to n pieces of spaces
-                String[] words = sentence.split(SPACE_PATTERN);
+                List<WordInfo> wordInfoList = splitSentenceToWordList(sentence);
 
-                List<WordInfo> wordInfoList = new ArrayList<>();
-                for (String word : words) {
-                    WordInfo wordInfo = new WordInfo(word, 1);
-                    wordInfoList.add(wordInfo);
-                }
-
-                //get the map for the next step of sizing the same word
                 Map<String, List<WordInfo>> wordInfoMap = getMap(wordInfoList);
 
-                List<WordInfo> list = new ArrayList<>();
-                for (Map.Entry<String, List<WordInfo>> entry : wordInfoMap.entrySet()) {
-                    WordInfo wordInfo = new WordInfo(entry.getKey(), entry.getValue().size());
-                    list.add(wordInfo);
-                }
-                wordInfoList = list;
+                wordInfoList = calculateWordCount(wordInfoMap);
 
                 wordInfoList.sort((firstWord, secondWord) -> secondWord.getWordCount() - firstWord.getWordCount());
 
-                StringJoiner joiner = new StringJoiner(DELIMITER);
-                for (WordInfo w : wordInfoList) {
-                    String wordWithCount = w.getWord() + " " + w.getWordCount();
-                    joiner.add(wordWithCount);
-                }
-                return joiner.toString();
+                return joinWordInfoListIntoResultString(wordInfoList);
+
             } catch (Exception exception) {
                 return "Calculate Error";
             }
         }
+    }
+
+    private String joinWordInfoListIntoResultString(List<WordInfo> wordInfoList) {
+        StringJoiner joiner = new StringJoiner(DELIMITER);
+        for (WordInfo w : wordInfoList) {
+            String wordWithCount = w.getWord() + " " + w.getWordCount();
+            joiner.add(wordWithCount);
+        }
+        return joiner.toString();
+    }
+
+    private List<WordInfo> calculateWordCount(Map<String, List<WordInfo>> wordInfoMap) {
+        List<WordInfo> wordInfoList;
+        List<WordInfo> list = new ArrayList<>();
+        for (Map.Entry<String, List<WordInfo>> entry : wordInfoMap.entrySet()) {
+            WordInfo wordInfo = new WordInfo(entry.getKey(), entry.getValue().size());
+            list.add(wordInfo);
+        }
+        wordInfoList = list;
+        return wordInfoList;
+    }
+
+    private List<WordInfo> splitSentenceToWordList(String sentence) {
+        String[] words = sentence.split(SPACE_PATTERN);
+
+        List<WordInfo> wordInfoList = new ArrayList<>();
+        for (String word : words) {
+            WordInfo wordInfo = new WordInfo(word, 1);
+            wordInfoList.add(wordInfo);
+        }
+        return wordInfoList;
     }
 
     private Map<String, List<WordInfo>> getMap(List<WordInfo> wordInfoList) {
