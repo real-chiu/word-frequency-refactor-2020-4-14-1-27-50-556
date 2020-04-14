@@ -8,6 +8,7 @@ public class WordFrequencyGame {
 
     public static final String SPACE_PATTERN = "\\s+";
     public static final String DELIMITER = "\n";
+    public static final String CALCULATE_ERROR = "Calculate Error";
 
     public String getResult(String sentence) {
         try {
@@ -20,7 +21,7 @@ public class WordFrequencyGame {
             return joinWordInfoListIntoResultString(wordInfoList);
 
         } catch (Exception exception) {
-            return "Calculate Error";
+            return CALCULATE_ERROR;
         }
     }
 
@@ -47,8 +48,8 @@ public class WordFrequencyGame {
 
     private String joinWordInfoListIntoResultString(List<WordInfo> wordInfoList) {
         StringJoiner joiner = new StringJoiner(DELIMITER);
-        for (WordInfo w : wordInfoList) {
-            String wordWithCount = w.getWord() + " " + w.getWordCount();
+        for (WordInfo word : wordInfoList) {
+            String wordWithCount = String.format("%s %d", word.getWord(), word.getWordCount());
             joiner.add(wordWithCount);
         }
         return joiner.toString();
