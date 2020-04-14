@@ -10,25 +10,21 @@ public class WordFrequencyGame {
     public static final String DELIMITER = "\n";
 
     public String getResult(String sentence) {
+        try {
+            List<WordInfo> wordInfoList = splitSentenceToWordList(sentence);
 
-        if (sentence.split(SPACE_PATTERN).length == 1) {
-            return sentence + " 1";
+            Map<String, List<WordInfo>> wordInfoMap = getMap(wordInfoList);
+
+            wordInfoList = calculateWordCount(wordInfoMap);
+
+            wordInfoList.sort((firstWord, secondWord) -> secondWord.getWordCount() - firstWord.getWordCount());
+
+            return joinWordInfoListIntoResultString(wordInfoList);
+
+        } catch (Exception exception) {
+            return "Calculate Error";
         }
-            try {
-                List<WordInfo> wordInfoList = splitSentenceToWordList(sentence);
-
-                Map<String, List<WordInfo>> wordInfoMap = getMap(wordInfoList);
-
-                wordInfoList = calculateWordCount(wordInfoMap);
-
-                wordInfoList.sort((firstWord, secondWord) -> secondWord.getWordCount() - firstWord.getWordCount());
-
-                return joinWordInfoListIntoResultString(wordInfoList);
-
-            } catch (Exception exception) {
-                return "Calculate Error";
-            }
-        }
+    }
 
     private String joinWordInfoListIntoResultString(List<WordInfo> wordInfoList) {
         StringJoiner joiner = new StringJoiner(DELIMITER);
