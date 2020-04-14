@@ -13,7 +13,7 @@ public class WordFrequencyGame {
 
         if (sentence.split(SPACE_PATTERN).length == 1) {
             return sentence + " 1";
-        } else {
+        }
             try {
                 List<WordInfo> wordInfoList = splitSentenceToWordList(sentence);
 
@@ -29,7 +29,6 @@ public class WordFrequencyGame {
                 return "Calculate Error";
             }
         }
-    }
 
     private String joinWordInfoListIntoResultString(List<WordInfo> wordInfoList) {
         StringJoiner joiner = new StringJoiner(DELIMITER);
