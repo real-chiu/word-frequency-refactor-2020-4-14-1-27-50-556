@@ -25,28 +25,24 @@ public class WordFrequencyGame {
     }
 
     private List<WordInfo> calculateWordCount(List<WordInfo> wordInfoList) {
-        Map<String, List<WordInfo>> wordInfoMap1 = new HashMap<>();
+        Map<String, List<WordInfo>> wordInfoMap = new HashMap<>();
         for (WordInfo wordInfo : wordInfoList) {
-            if (!wordInfoMap1.containsKey(wordInfo.getWord())) {
-                ArrayList wordInfoArray = new ArrayList<>();
+            if (!wordInfoMap.containsKey(wordInfo.getWord())) {
+                ArrayList<WordInfo> wordInfoArray = new ArrayList<>();
                 wordInfoArray.add(wordInfo);
-                wordInfoMap1.put(wordInfo.getWord(), wordInfoArray);
+                wordInfoMap.put(wordInfo.getWord(), wordInfoArray);
             } else {
-                wordInfoMap1.get(wordInfo.getWord()).add(wordInfo);
+                wordInfoMap.get(wordInfo.getWord()).add(wordInfo);
             }
         }
-        Map<String, List<WordInfo>> wordInfoMap = wordInfoMap1;
 
-        List<WordInfo> wordInfoList1;
         List<WordInfo> list = new ArrayList<>();
         for (Map.Entry<String, List<WordInfo>> entry : wordInfoMap.entrySet()) {
             WordInfo wordInfo = new WordInfo(entry.getKey(), entry.getValue().size());
             list.add(wordInfo);
         }
-        wordInfoList1 = list;
-        wordInfoList = wordInfoList1;
 
-        return wordInfoList;
+        return list;
     }
 
     private String joinWordInfoListIntoResultString(List<WordInfo> wordInfoList) {
